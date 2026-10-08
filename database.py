@@ -9,13 +9,13 @@ def create_table():
     try:
 
         cursor.execute("""
-                CREATE IF NOT EXISTS TABLE products(
+                CREATE TABLE IF NOT EXISTS products(
                     id UUID, name TEXT, price FLOAT, quantity INTEGER
                 )
             """)
 
     except Exception as e:
-        print("Houve um erro ao criar a tabela de produtos")
+        print("Houve um erro ao criar a tabela de produtos: ", e)
 
     finally:
         cursor.close()
