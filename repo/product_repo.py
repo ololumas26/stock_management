@@ -50,3 +50,16 @@ class ProductRepository:
         
         finally : 
             cursor.close()
+
+    def get_by_name(self, product_name : str):
+
+        cursor = self.db.cursor()
+        
+        try:
+            return cursor.execute("Select * from products where name LIKE ?", (f'%{product_name}%',)).fetchall()
+
+        except Exception as e:
+            print("There's a mistake retrieing data from database ", e)
+        
+        finally : 
+            cursor.close()

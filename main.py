@@ -9,4 +9,4 @@ create_table()
 # p = Product("Iphone 16", 10, 10)
 service = ProductService(cnn)
 
-print("Produtos na base de dados: ", service.get_by_id('c8bad6be-f2f5-451c-a1f7-b51cc0fedbaf'))
+print("Produtos na base de dados: ", service.get_by_name('Iphone 16'))

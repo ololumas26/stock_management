@@ -15,7 +15,9 @@ class ProductService:
     def get_all(self, page : int = 1, limit : int = 10):
         offset = (page - 1) * limit
         return self.product_repo.get_all(limit=limit, offset=offset)
-        
-
+    
     def get_by_id(self, product_id : str):
         return self.product_repo.get_by_id(product_id=product_id)
+
+    def get_by_name(self, product_name : str):
+        return self.product_repo.get_by_name(product_name)

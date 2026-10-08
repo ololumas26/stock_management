@@ -7,7 +7,7 @@ class Product:
 
     def __init__(self, name : str, price : Decimal, quantity : int = 0):
 
-        # Falha antes de criar o objeto
+        # Fail before create de object rule
 
         if not name:
             raise ValueError("O nome do produto é obrigatório")
