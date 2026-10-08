@@ -22,3 +22,31 @@ class ProductRepository:
 
         finally : 
             cursor.close()
+
+
+    def get_by_id(self, product_id : str):
+
+        cursor = self.db.cursor()
+
+        try:
+            return cursor.execute("Select * from products where id = ?",(product_id,)).fetchall()
+
+        except Exception as e:
+            print("There's a mistake retrieing data from database ", e)
+        
+        finally : 
+            cursor.close()
+
+
+    def get_all(self, offset : int = 0, limit = 10):
+
+        cursor = self.db.cursor()
+
+        try:
+            return cursor.execute("Select * from products limit ? offset ?", (limit, offset)).fetchall()
+
+        except Exception as e:
+            print("There's a mistake retrieing data from database ", e)
+        
+        finally : 
+            cursor.close()
