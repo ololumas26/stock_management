@@ -12,7 +12,7 @@ def create_table():
         'products': ("""
             id UUID PRIMARY KEY NOT NULL,
             unique_ref TEXT UNIQUE NOT NULL,
-            name TEXT UNIQUE NOT NULL,
+            name TEXT NOT NULL,
             price NUMERIC(10,2)  NOT NULL CHECK(price >= 0),
             active BOOLEAN NOT NULL DEFAULT TRUE
         """),

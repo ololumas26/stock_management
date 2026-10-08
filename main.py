@@ -7,7 +7,7 @@ from database import create_table, cnn
 
 create_table()
 
-p = Product("Iphone 16", 608)
+p = Product("Iphone 18", 608, 20)
 service = ProductService(cnn)
 
 service.create_product(p)
