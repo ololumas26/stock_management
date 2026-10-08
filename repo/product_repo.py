@@ -1,4 +1,6 @@
 from model.product import Product
+from model.stock import Stock
+from model.moviment import Movements
 
 
 class ProductRepository:
@@ -6,18 +8,30 @@ class ProductRepository:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def save(self, product : Product):
+    def save(self, product : Product, stock : Stock, movement : Movements):
 
         cursor = self.db.cursor()
         try:
-            saved_product = cursor.execute("INSERT INTO products (id, name, price) Values (?,?,?)",
-                            (product.id, product.name, product.price))
+
+            cursor.execute('BEGIN IMMEDIATE')
+
+            cursor.execute("INSERT INTO products (id, unique_ref , name, price) Values (?,?,?,?)",
+                            (product.id, product.unique_ref ,product.name, product.price))
+
+            last_product_saved_id = cursor.lastrowid
+     
+            cursor.execute("INSERT INTO stocks (id, product_id, quantity) Values (?,?,?)",
+                            (stock.id, product.id, stock.quantity))
+
+            cursor.execute("INSERT INTO movements (id, product_id, type, note) Values (?,?,?,?)",
+                            (movement.id, product.id, movement.mov_type, movement.note))
+            
             self.db.commit()
-            return saved_product.lastrowid
+            return last_product_saved_id
 
         except Exception as e:
             print("Houve um erro ao inserir os dados na base de dados: ", e)
-            self.db.rollback()
+            cursor.execute('ROLLBACK')
 
         finally : 
             cursor.close()
@@ -28,7 +42,7 @@ class ProductRepository:
         cursor = self.db.cursor()
 
         try:
-            return cursor.execute("Select * from products where id = ?",(product_id,)).fetchall()
+            return cursor.execute("Select * from products where id = ?",(product_id,)).fetchone() is not None
 
         except Exception as e:
             print("There's a mistake retrieing data from database ", e)

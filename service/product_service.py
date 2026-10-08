@@ -1,6 +1,7 @@
 from repo.product_repo import ProductRepository
 from model.product import Product
-
+from model.moviment import Movements, MovimentsType
+from model.stock import Stock
 
 class ProductService:
 
@@ -10,7 +11,11 @@ class ProductService:
         self.product_repo : ProductRepository = ProductRepository(db_connection)
 
     def create_product(self, product : Product):
-        self.product_repo.save(product=product)
+
+        stock = Stock(product.id, quantity=product.quantity)
+        mov = Movements(product.id, mov_type=MovimentsType.ENTRANCE.value)
+
+        return self.product_repo.save(product=product, stock=stock, movement=mov)
 
     def get_all(self, page : int = 1, limit : int = 10):
         offset = (page - 1) * limit
