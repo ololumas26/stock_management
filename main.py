@@ -6,7 +6,8 @@ from database import create_table, cnn
 
 
 create_table()
-# p = Product("Iphone 16", 10, 10)
-service = ProductService(cnn)
+# # p = Product("Iphone 16", 10, 10)
+# service = ProductService(cnn)
 
-print("Produtos na base de dados: ", service.get_by_name('Iphone 16'))
+# print("Produtos na base de dados: ", service.get_by_name('Iphone 16'))
+

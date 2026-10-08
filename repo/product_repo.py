@@ -10,10 +10,9 @@ class ProductRepository:
 
         cursor = self.db.cursor()
         try:
-            saved_product = cursor.execute("INSERT INTO products (id, name, price, quantity) Values (?,?,?,?)",
-                            (product.id, product.name, product.price, product.quantity))
+            saved_product = cursor.execute("INSERT INTO products (id, name, price) Values (?,?,?)",
+                            (product.id, product.name, product.price))
             self.db.commit()
-
             return saved_product.lastrowid
 
         except Exception as e:
