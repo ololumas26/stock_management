@@ -16,3 +16,9 @@ class StockService:
             raise ValueError("Product not found")
 
         return self.stock_repo.save(stock)
+
+    def regegist_entrance(self):
+        pass
+
+    def regist_exit(self):
+        pass
