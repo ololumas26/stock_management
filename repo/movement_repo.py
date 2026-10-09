@@ -5,23 +5,39 @@ class MovementsRepository:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def get_all(self):
-
-        try:
-            cursor = self.db.cursor()
-            cursor.execute("SELECT * FROM movements")
-            return cursor.fetchall()
-        except Exception as error:
-            raise RuntimeError("Erro ao buscar movimentações") from error
-
+    
     def get_by_id(self, movement_id):
 
+        cursor = self.db.cursor()
         try:
-            cursor = self.db.cursor()
             cursor.execute("SELECT * FROM movements WHERE id = ?", (movement_id,))
             return cursor.fetchone()
         except Exception as error:
-            raise RuntimeError("Erro ao buscar movimentação") from error
+            raise RuntimeError("Error getting movement") from error
+
+    def get_all(self, limit : int, offset : int):
+
+        cursor = self.db.cursor()
+        try:
+            return cursor.execute("SELECT * FROM movements limit ? offset ?", (limit, offset)).fetchall()
+
+        except Exception as e:
+            print("An error occurs while getting movements")
+
+        finally:
+            cursor.close()
+
+    def get_total_movements(self):
+        
+        cursor = self.db.cursor()
+        try:
+            return cursor.execute("SELECT COUNT(id) from movements").fetchone()
+
+        except Exception as e:
+            print("An error occurs while getting movements")
+
+        finally:
+            cursor.close()
 
     def create(self, movement):
 
@@ -52,7 +68,7 @@ class MovementsRepository:
             raise RuntimeError("Erro ao atualizar movimentação") from error
 
     def delete(self, movement_id):
-        
+
         try:
             cursor = self.db.cursor()
             cursor.execute("DELETE FROM movements WHERE id = ?", (movement_id,))
