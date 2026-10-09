@@ -26,7 +26,7 @@ class ProductRepository:
             cursor.execute("INSERT INTO movements (id, product_id, type, note) Values (?,?,?,?)",
                             (movement.id, product.id, movement.mov_type, movement.note))
             
-            self.db.commit()
+            cursor.execute("COMMIT")
             return last_product_saved_id
 
         except Exception as e:

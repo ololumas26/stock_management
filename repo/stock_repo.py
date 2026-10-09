@@ -1,5 +1,5 @@
 from model.stock import Stock
-
+from model.moviment import MovimentsType, Movements
 
 class StockRepository:
 
@@ -18,21 +18,28 @@ class StockRepository:
         finally:
             cursor.close()
 
-    def regist_new_stock(self, stock : Stock):
+    def regist_new_stock(self, stock : Stock, movement : Movements):
 
         cursor = self.db.cursor()
     
         try:
+            cursor.execute('BEGIN IMMEDIATE')
 
-            last_row = cursor.execute(
+            cursor.execute(
                 "UPDATE stocks SET quantity = ? where product_id = ?",
                 (stock.quantity, stock.product_id),
             ).lastrowid
-            self.db.commit()
+
+            last_row = cursor.lastrowid
+
+            cursor.execute("INSERT INTO movements(id, product_id, type, quantity_moved, note) VALUES(?,?,?,?,?)",
+                           (movement.id, movement.product_id, movement.mov_type,movement.quantity ,movement.note))
+            cursor.execute("COMMIT")
             return last_row
         
         except Exception as e:
             print("Something goes wrong while inserting data in database: ", e)
+            cursor.execute("ROLLBACK")
 
         finally:
             cursor.close()

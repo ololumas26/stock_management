@@ -14,6 +14,6 @@ service = ProductService(cnn)
 
 s = StockService(cnn)
 # s.regist_entrance('0567ca4a-b097-4936-80d4-c65730c402e5', 5)
-s.regist_exit('0567ca4a-b097-4936-80d4-c65730c402e5', 3)
+s.regist_exit('e0cddbef-6490-451a-9e2b-4e29dcc20173', 101)
 
 
