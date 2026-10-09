@@ -7,6 +7,7 @@ from service.stock_service import StockService
 from service.movement_service import MovementService
 
 from repo.movement_repo import MovementsRepository
+from service.dashboard_service import DashboardService
 
 
 # create_table()
@@ -16,12 +17,18 @@ from repo.movement_repo import MovementsRepository
 
 # s = StockService(cnn)
 # # s.regist_entrance('0567ca4a-b097-4936-80d4-c65730c402e5', 5)
-# s.regist_exit('e0cddbef-6490-451a-9e2b-4e29dcc20173', 101)
+# s.regist_exit('0567ca4a-b097-4936-80d4-c65730c402e5', 11)
 
 
 
-movements = MovementService(cnn)
-mov_repo = MovementsRepository(cnn)
+# movements = MovementService(cnn)
+# mov_repo = MovementsRepository(cnn)
 
-print(movements.get_all_movements())
-# print(mov_repo.get_total_movements())
+# print(movements.get_all_movements())
+# # print(mov_repo.get_total_movements())
+
+
+
+dashboard = DashboardService(cnn)
+
+print(dashboard.get_summary())

@@ -45,7 +45,43 @@ class StockRepository:
             cursor.close()
 
 
+    def get_stock_less_than_5(self):
+
+        cursor = self.db.cursor()
+        try:
+        
+            return cursor.execute("""
+                    select p.name, s.quantity from products p
+                    JOIN stocks s on p.id = s.product_id
+                    where s.quantity < 5
+                """).fetchall()
+    
+        except Exception as e:
+            print("Something goes wrong while performing the query: ", e)
+
+        finally:
+            cursor.close()
+
+    def get_stock_total_value(self):
+
+        cursor = self.db.cursor()
+        try:
+        
+            return cursor.execute("""
+                    select SUM(p.price * s.quantity) as total_stock_value from products p
+                    join stocks s on p.id = s.product_id
+                """).fetchone()
+    
+        except Exception as e:
+            print("Something goes wrong while performing the query: ", e)
+
+        finally:
+            cursor.close()
+        
+
+
     def save(self, stock : Stock):
+
         cursor = self.db.cursor()
 
         try:

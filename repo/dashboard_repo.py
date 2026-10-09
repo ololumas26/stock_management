@@ -3,19 +3,14 @@ from repo.stock_repo import StockRepository
 from repo.product_repo import ProductRepository
 
 
-class DashboardService:
+class DashboardRepository:
 
     def __init__(self, db_connection):
         self.db = db_connection
         self.stock_repo = StockRepository(db_connection)
         self.product_repo = ProductRepository(db_connection)
         self.movements_repo = MovementsRepository(db_connection)
-    
-    
+
+
     def get_summary(self):
-  
-        return {
-            'total_products': self.product_repo.get_total_products(),
-            'less_than_5' : self.stock_repo.get_stock_less_than_5(),
-            'stock_value': self.stock_repo.get_stock_total_value()
-        } 
+        return self.product_repo.get_total_products()

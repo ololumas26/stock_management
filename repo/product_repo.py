@@ -1,12 +1,14 @@
 from model.product import Product
 from model.stock import Stock
 from model.moviment import Movements
+from .shared.shared import Shared
 
 
 class ProductRepository:
 
     def __init__(self, db_connection):
         self.db = db_connection
+        self.shared = Shared(db_connection)
 
     def save(self, product : Product, stock : Stock, movement : Movements):
 
@@ -76,3 +78,9 @@ class ProductRepository:
         
         finally : 
             cursor.close()
+
+    def get_total_products(self):
+        return self.shared.get_totals('products')
+
+  
+
