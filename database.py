@@ -2,6 +2,7 @@ import sqlite3
 
 
 cnn = sqlite3.connect("stock.db", timeout=30.0, isolation_level=None)
+cnn.execute("PRAGMA foreign_keys = ON") # Habilita as chaves estrangeiras
 
 
 def create_table():
@@ -25,7 +26,7 @@ def create_table():
         'movements' : ("""
                        id UUID PRIMARY KEY NOT NULL,
                        product_id UUID NOT NULL,
-                       type TEXT,
+                       mov_type TEXT,
                        note TEXT DEFAULT NULL,
                        quantity_moved INTEGER DEFAULT 0,
                        FOREIGN KEY (product_id) REFERENCES products(id)""")

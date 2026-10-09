@@ -22,25 +22,17 @@ class StockService:
 
     def regist_stock(self, product_id : str, quantity : int, t : MovimentsType, note : str = ''):
 
-        product_stock : Stock = self.stock_repo.get_by_product_id(product_id)
+        if quantity <= 0:
+            raise RuntimeError("Quantity to move should be greater than ZERO (0)")
 
-        if not product_stock:
+        product_stock = self.stock_repo.get_by_product_id(product_id)
+
+        if not  product_stock:
             raise RuntimeError("PRODUCT NOT FOUND")
-
-        _, prod_id , quant = product_stock
-
-        if t == MovimentsType.ENTRANCE:
-            quant += quantity
-        else:
-            quant -= quantity
-
-        if quant < 0:
-            raise RuntimeError(f"Not enougth amount to subract, movement not allowed, current stock {quant+quantity}")
-
-        stock = Stock(product_id=prod_id, quantity=quant)
+        
         mov = Movements(product_id, t.value,quantity, note)
 
-        return self.stock_repo.regist_new_stock(stock=stock, movement=mov)
+        return self.stock_repo.regist_new_stock(product_id=product_id,quantity=quantity,movement=mov)
     
 
     # Mudar a forma como registo o stock e passar a registar de forma atomica para que também possa registar o movimento de

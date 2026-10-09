@@ -23,6 +23,7 @@ class MovementsRepository:
 
         except Exception as e:
             print("An error occurs while getting movements")
+            raise
 
         finally:
             cursor.close()
@@ -35,6 +36,7 @@ class MovementsRepository:
 
         except Exception as e:
             print("An error occurs while getting movements")
+            raise
 
         finally:
             cursor.close()
@@ -44,22 +46,43 @@ class MovementsRepository:
         try:
             cursor = self.db.cursor()
             cursor.execute(
-                "INSERT INTO movements (product_id, quantity, movement_type) VALUES (?, ?, ?)",
-                (movement["product_id"], movement["quantity"], movement["movement_type"]),
+                """
+                INSERT INTO movements
+                    (id, product_id, mov_type, quantity_moved, note)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    movement.id,
+                    movement.product_id,
+                    movement.mov_type,
+                    movement.quantity,
+                    movement.note,
+                ),
             )
             self.db.commit()
             return cursor.lastrowid
         except Exception as error:
             self.db.rollback()
             raise RuntimeError("Erro ao criar movimentação") from error
+    
 
     def update(self, movement_id, movement):
 
         try:
             cursor = self.db.cursor()
             cursor.execute(
-                "UPDATE movements SET product_id = ?, quantity = ?, movement_type = ? WHERE id = ?",
-                (movement["product_id"], movement["quantity"], movement["movement_type"], movement_id),
+                """
+                UPDATE movements
+                SET product_id = ?, mov_type = ?, quantity_moved = ?, note = ?
+                WHERE id = ?
+                """,
+                (
+                    movement.product_id,
+                    movement.mov_type,
+                    movement.quantity,
+                    movement.note,
+                    movement_id,
+                ),
             )
             self.db.commit()
             return cursor.rowcount > 0
