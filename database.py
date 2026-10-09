@@ -28,7 +28,7 @@ def create_table():
                        product_id UUID NOT NULL,
                        mov_type TEXT,
                        note TEXT DEFAULT NULL,
-                       quantity_moved INTEGER DEFAULT 0,
+                       quantity_moved INTEGER DEFAULT 0 CHECK (quantity_moved > 0),
                        FOREIGN KEY (product_id) REFERENCES products(id)""")
         }
     

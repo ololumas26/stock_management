@@ -14,6 +14,8 @@ class MovementsRepository:
             return cursor.fetchone()
         except Exception as error:
             raise RuntimeError("Error getting movement") from error
+        finally:
+            cursor.close()
 
     def get_all(self, limit : int, offset : int):
 
@@ -64,6 +66,8 @@ class MovementsRepository:
         except Exception as error:
             self.db.rollback()
             raise RuntimeError("Erro ao criar movimentação") from error
+        finally:
+            cursor.close()
     
 
     def update(self, movement_id, movement):
@@ -89,6 +93,8 @@ class MovementsRepository:
         except Exception as error:
             self.db.rollback()
             raise RuntimeError("Erro ao atualizar movimentação") from error
+        finally:
+            cursor.close()
 
     def delete(self, movement_id):
 
@@ -100,5 +106,7 @@ class MovementsRepository:
         except Exception as error:
             self.db.rollback()
             raise RuntimeError("Erro ao excluir movimentação") from error
+        finally:
+            cursor.close()
 
         

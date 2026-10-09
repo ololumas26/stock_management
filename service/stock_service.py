@@ -24,12 +24,7 @@ class StockService:
 
         if quantity <= 0:
             raise RuntimeError("Quantity to move should be greater than ZERO (0)")
-
-        product_stock = self.stock_repo.get_by_product_id(product_id)
-
-        if not  product_stock:
-            raise RuntimeError("PRODUCT NOT FOUND")
-        
+  
         mov = Movements(product_id, t.value,quantity, note)
 
         return self.stock_repo.regist_new_stock(product_id=product_id,quantity=quantity,movement=mov)

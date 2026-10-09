@@ -25,8 +25,20 @@ class ProductRepository:
             cursor.execute("INSERT INTO stocks (id, product_id, quantity) Values (?,?,?)",
                             (stock.id, product.id, stock.quantity))
 
-            cursor.execute("INSERT INTO movements (id, product_id, type, note) Values (?,?,?,?)",
-                            (movement.id, product.id, movement.mov_type, movement.note))
+            cursor.execute(
+                """
+                INSERT INTO movements
+                    (id, product_id, mov_type, quantity_moved, note)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    movement.id,
+                    product.id,
+                    movement.mov_type,
+                    movement.quantity,
+                    movement.note,
+                ),
+            )
             
             cursor.execute("COMMIT")
             return last_product_saved_id
@@ -83,4 +95,3 @@ class ProductRepository:
         return self.shared.get_totals('products')
 
   
-
