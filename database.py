@@ -1,44 +1,15 @@
 import sqlite3
 
 
-cnn = sqlite3.connect("stock.db", timeout=30.0, isolation_level=None)
-cnn.execute("PRAGMA foreign_keys = ON") # Habilita as chaves estrangeiras
+# cnn = sqlite3.connect("stock.db", timeout=30.0, isolation_level=None)
+# cnn.execute("PRAGMA foreign_keys = ON") # Habilita as chaves estrangeiras
 
+def create_connection(path = "stock.db"):
 
-def create_table():
+    if not path:
+        raise RuntimeError("Database name is required")
 
-    cursor = cnn.cursor()
+    cnn = sqlite3.connect(path, timeout=30.0, isolation_level=None)
+    cnn.execute("PRAGMA foreign_keys = ON")
 
-    tables = {
-        'products': ("""
-            id UUID PRIMARY KEY NOT NULL,
-            unique_ref TEXT UNIQUE NOT NULL,
-            name TEXT NOT NULL,
-            price NUMERIC(10,2)  NOT NULL CHECK(price >= 0),
-            active BOOLEAN NOT NULL DEFAULT TRUE
-        """),
-
-        'stocks': ("""id UUID PRIMARY KEY,
-                    product_id UUID NOT NULL UNIQUE,
-                    quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0),
-                    FOREIGN KEY (product_id) REFERENCES products(id)"""),
-
-        'movements' : ("""
-                       id UUID PRIMARY KEY NOT NULL,
-                       product_id UUID NOT NULL,
-                       mov_type TEXT,
-                       note TEXT DEFAULT NULL,
-                       quantity_moved INTEGER DEFAULT 0 CHECK (quantity_moved > 0),
-                       FOREIGN KEY (product_id) REFERENCES products(id)""")
-        }
-    
-    try:
-
-        for table_name, fields in tables.items():
-            cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name}({fields})")
-
-    except Exception as e:
-        print("Houve um erro ao criar a tabela de produtos: ", e)
-
-    finally:
-        cursor.close()
+    return cnn

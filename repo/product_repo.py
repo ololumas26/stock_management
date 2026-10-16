@@ -18,7 +18,7 @@ class ProductRepository:
             cursor.execute('BEGIN IMMEDIATE')
 
             cursor.execute("INSERT INTO products (id, unique_ref , name, price) Values (?,?,?,?)",
-                            (product.id, product.unique_ref ,product.name, product.price))
+                            (product.id, product.unique_ref ,product.name, str(product.price)))
 
             last_product_saved_id = cursor.lastrowid
      
@@ -41,11 +41,12 @@ class ProductRepository:
             )
             
             cursor.execute("COMMIT")
-            return last_product_saved_id
+            return True
 
         except Exception as e:
             print("Houve um erro ao inserir os dados na base de dados: ", e)
             cursor.execute('ROLLBACK')
+            raise
 
         finally : 
             cursor.close()
